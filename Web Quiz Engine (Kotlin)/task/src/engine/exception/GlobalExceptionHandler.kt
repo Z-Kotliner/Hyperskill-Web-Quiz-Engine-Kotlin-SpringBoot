@@ -24,4 +24,16 @@ class GlobalExceptionHandler {
 
         return ResponseEntity(body, HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(QuizNotFoundException::class)
+    fun handleQuizNotFoundException(
+        ex: QuizNotFoundException,
+        request: WebRequest
+    ): ResponseEntity<Any>? {
+        val body: MutableMap<String, Any> = LinkedHashMap()
+        body["timestamp"] = LocalDateTime.now()
+        body["error"] = ex.message.toString()
+
+        return ResponseEntity(body, HttpStatus.NOT_FOUND)
+    }
 }

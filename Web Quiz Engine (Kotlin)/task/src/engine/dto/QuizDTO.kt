@@ -1,9 +1,9 @@
-package engine.model
+package engine.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
- *  A model class representing a single Quiz with title, question and answer choices.
+ *   DTO representation for Quiz entity
  *
  *  @author Omar Osman
  *
@@ -11,18 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
  *  @param title the title of the Quiz
  *  @param text the question of the Quiz
  *  @param options the multiple choice of answers
- *  @param answer the correct answer
  */
 
-data class Quiz(
+class QuizDTO (
     @JsonProperty("id")
-    var id: Int,
+    val id: Int,
     @JsonProperty("title")
     val title: String,
     @JsonProperty("text")
     val text: String,
     @JsonProperty("options")
     val options: List<String>,
-    @JsonProperty("answer")
-    val answer: Int
 )
