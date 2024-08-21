@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  *  @param options the multiple choice of answers
  */
 
-class QuizDTO (
+class QuizDTO(
     @JsonProperty("id")
     val id: Int,
     @JsonProperty("title")

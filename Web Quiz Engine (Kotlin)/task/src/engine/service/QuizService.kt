@@ -5,6 +5,7 @@ import engine.dto.QuizDTO
 import engine.exception.QuizNotFoundException
 import engine.exception.QuizProcessingException
 import engine.model.Quiz
+import engine.model.QuizAnswer
 import engine.model.QuizResult
 import engine.repository.QuizRepository
 import org.springframework.stereotype.Service
@@ -25,10 +26,10 @@ class QuizService(private val quizRepository: QuizRepository, private val myMapp
         return quizRepository.getSingleQuiz()
     }
 
-    fun solveQuiz(id: Int, answer: Int): QuizResult {
+    fun solveQuiz(id: Int, qAnswer: QuizAnswer?): QuizResult {
         val quiz = quizRepository.getQuizById(id) ?: throw QuizNotFoundException("Quiz Not found. Wrong Id.")
 
-        return if (quiz.answer == answer) {
+        return if (qAnswer != null && quiz.answer == qAnswer.answer) {
             QuizResult(success = true, feedback = "Congratulations, you're right!")
         } else {
             QuizResult(success = false, feedback = "Wrong answer! Please, try again.")
