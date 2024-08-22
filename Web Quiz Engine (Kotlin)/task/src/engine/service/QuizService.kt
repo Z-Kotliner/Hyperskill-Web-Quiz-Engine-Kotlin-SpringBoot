@@ -8,26 +8,25 @@ import engine.model.Quiz
 import engine.model.QuizAnswer
 import engine.model.QuizResult
 import engine.repository.QuizRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  *  Service class that accepts, processes and forwards requests and responses to and from controller and/or repository.
  *
  *  @author Omar Osman
- *  @param quizRepository Quiz repository that interacts with data sources.
+ *  @param quizRepository Quiz repository that provides us with CRUD functions.
  *  @param myMapper Model to DTO mapper class.
  */
 @Service
 class QuizService(private val quizRepository: QuizRepository, private val myMapper: MyMapper) {
-    private val idGenerator = AtomicInteger()
 
     fun getQuiz(): Quiz {
-        return quizRepository.getSingleQuiz()
+        return quizRepository.findByIdOrNull(1) ?: throw QuizProcessingException("No Quiz found!")
     }
 
     fun solveQuiz(id: Int, qAnswer: QuizAnswer?): QuizResult {
-        val quiz = quizRepository.getQuizById(id) ?: throw QuizNotFoundException("Quiz Not found. Wrong Id.")
+        val quiz = quizRepository.findById(id).orElse(null) ?: throw QuizNotFoundException("Quiz Not found. Wrong Id.")
 
         return if (qAnswer != null && quiz.answer == qAnswer.answer) {
             QuizResult(success = true, feedback = "Congratulations, you're right!")
@@ -37,22 +36,18 @@ class QuizService(private val quizRepository: QuizRepository, private val myMapp
     }
 
     fun crateQuiz(quiz: Quiz): QuizDTO {
-        // Generate unique integer for id
-        quiz.id = idGenerator.incrementAndGet()
+        val rQuiz = quizRepository.save(quiz) ?: throw QuizProcessingException("Error Creating Quiz!")
 
-        if (quizRepository.createQuiz(quiz)) {
-            return myMapper.convertQuizToDTO(quiz)
-        } else throw QuizProcessingException("Error Creating Quiz!")
+        return myMapper.convertQuizToDTO(rQuiz)
     }
 
     fun getQuiz(id: Int): QuizDTO {
-        val quiz = quizRepository.getQuizById(id)
-        if (quiz != null) return myMapper.convertQuizToDTO(quiz)
+        val quiz = quizRepository.findById(id).orElseThrow { QuizNotFoundException("Quiz Not found. Wrong Id.") }
 
-        throw QuizNotFoundException("Quiz Not found. Wrong Id.")
+        return myMapper.convertQuizToDTO(quiz)
     }
 
     fun getAllQuizzes(): List<QuizDTO> {
-        return quizRepository.getAllQuizzes().map(myMapper::convertQuizToDTO)
+        return quizRepository.findAll().map(myMapper::convertQuizToDTO)
     }
 }
