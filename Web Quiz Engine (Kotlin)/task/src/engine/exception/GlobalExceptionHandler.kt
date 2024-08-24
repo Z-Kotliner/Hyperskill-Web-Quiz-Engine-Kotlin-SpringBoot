@@ -36,4 +36,40 @@ class GlobalExceptionHandler {
 
         return ResponseEntity(body, HttpStatus.NOT_FOUND)
     }
+
+    @ExceptionHandler(UserAuthenticationException::class)
+    fun handleUserAuthenticationException(
+        ex: UserAuthenticationException,
+        request: WebRequest
+    ): ResponseEntity<Any>? {
+        val body: MutableMap<String, Any> = LinkedHashMap()
+        body["timestamp"] = LocalDateTime.now()
+        body["error"] = ex.message.toString()
+
+        return ResponseEntity(body, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(UserLoginRequestException::class)
+    fun handleUserLoginRequestException(
+        ex: UserLoginRequestException,
+        request: WebRequest
+    ): ResponseEntity<Any>? {
+        val body: MutableMap<String, Any> = LinkedHashMap()
+        body["timestamp"] = LocalDateTime.now()
+        body["error"] = ex.message.toString()
+
+        return ResponseEntity(body, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(QuizDeletionRequestException::class)
+    fun handleQuizDeleteRequestException(
+        ex: QuizDeletionRequestException,
+        request: WebRequest
+    ): ResponseEntity<Any>? {
+        val body: MutableMap<String, Any> = LinkedHashMap()
+        body["timestamp"] = LocalDateTime.now()
+        body["error"] = ex.message.toString()
+
+        return ResponseEntity(body, HttpStatus.FORBIDDEN)
+    }
 }

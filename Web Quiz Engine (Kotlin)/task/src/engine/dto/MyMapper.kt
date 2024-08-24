@@ -1,6 +1,6 @@
 package engine.dto
 
-import engine.model.Quiz
+import engine.model.Quiz.Quiz
 import org.springframework.stereotype.Component
 
 /**

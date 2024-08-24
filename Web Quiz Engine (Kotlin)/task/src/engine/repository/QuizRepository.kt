@@ -1,6 +1,6 @@
 package engine.repository
 
-import engine.model.Quiz
+import engine.model.Quiz.Quiz
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

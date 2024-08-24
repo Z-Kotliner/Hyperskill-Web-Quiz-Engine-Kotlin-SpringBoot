@@ -1,4 +1,4 @@
-package engine.model
+package engine.model.Quiz
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
@@ -40,5 +40,7 @@ data class Quiz(
     val options: List<String>,
 
     @JsonProperty("answer")
-    val answer: Set<Int> = emptySet()
+    val answer: Set<Int> = emptySet(),
+
+    var author: String?
 )

@@ -27,21 +27,37 @@ repositories {
 sourceSets.main.resources.srcDirs = ["src/resources"]
 
 dependencies {
+    // SpringBoot core starter
     implementation 'org.springframework.boot:spring-boot-starter'
+
+    // SpringBoot actuator - monitor & manage production app
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // SpringBoot web - REST services, Spring MVC, Tomcat ...
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Jackson Kotlin module - serialization/deserialization of Kotlin classes
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
+    // Kotlin-reflect - runtime libraries for Kotlin reflection
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
 
-    // Validation
+    // Validation - bean validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // JPA - Spring Data JPA with Hibernate
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Spring Security - authentication + access control framework
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // H2 database
     runtimeOnly 'com.h2database:h2'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // SpringBoot Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
 }
 
 tasks.withType(KotlinCompile) {

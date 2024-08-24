@@ -1,4 +1,4 @@
-package engine.model
+package engine.model.Quiz
 
 /**
  * A model class representing a Quiz Result with success value true indicating correct answer.

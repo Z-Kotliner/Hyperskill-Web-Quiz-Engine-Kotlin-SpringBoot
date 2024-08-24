@@ -1,12 +1,14 @@
 package engine.controller
 
 import engine.dto.QuizDTO
-import engine.model.Quiz
-import engine.model.QuizAnswer
-import engine.model.QuizResult
+import engine.model.Quiz.Quiz
+import engine.model.Quiz.QuizAnswer
+import engine.model.Quiz.QuizResult
 import engine.service.QuizService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -27,8 +29,8 @@ class QuizController {
     }
 
     @PostMapping
-    fun createQuiz(@RequestBody @Valid quiz: Quiz): QuizDTO {
-        return quizService.crateQuiz(quiz)
+    fun createQuiz(@RequestBody @Valid quiz: Quiz, auth: Authentication): QuizDTO {
+        return quizService.crateQuiz(quiz, auth.name)
     }
 
     @GetMapping("/{id}")
@@ -45,4 +47,10 @@ class QuizController {
     fun solveQuiz(@PathVariable id: Int, @RequestBody answer: QuizAnswer?): QuizResult {
         return quizService.solveQuiz(id, answer)
     }
+
+    @DeleteMapping("/{id}")
+    fun deleteQuiz(@PathVariable id: Int, auth: Authentication): ResponseEntity<Quiz?> {
+        return quizService.deleteQuiz(id, auth.name)
+    }
+
 }
