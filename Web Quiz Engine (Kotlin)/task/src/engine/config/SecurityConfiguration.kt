@@ -29,7 +29,6 @@ class SecurityConfiguration {
             .csrf { it.disable() }
             .authorizeHttpRequests { matcherRegistry ->
                 matcherRegistry
-
                     .requestMatchers("/api/register", "/error/**").permitAll()
                     .requestMatchers("/actuator/shutdown").permitAll()
                     .requestMatchers("/**").authenticated()

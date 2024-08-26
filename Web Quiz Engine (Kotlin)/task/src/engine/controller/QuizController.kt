@@ -1,12 +1,15 @@
 package engine.controller
 
+import engine.dto.QuizCompletionDTO
 import engine.dto.QuizDTO
 import engine.model.Quiz.Quiz
 import engine.model.Quiz.QuizAnswer
 import engine.model.Quiz.QuizResult
 import engine.service.QuizService
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Min
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
@@ -30,7 +33,7 @@ class QuizController {
 
     @PostMapping
     fun createQuiz(@RequestBody @Valid quiz: Quiz, auth: Authentication): QuizDTO {
-        return quizService.crateQuiz(quiz, auth.name)
+        return quizService.crateQuiz(quiz, auth)
     }
 
     @GetMapping("/{id}")
@@ -39,18 +42,22 @@ class QuizController {
     }
 
     @GetMapping
-    fun getAvailableQuizzes(): List<QuizDTO> {
-        return quizService.getAllQuizzes()
+    fun getPagedQuizzes(@RequestParam @Min(0) page: Int, auth: Authentication): Page<QuizDTO> {
+        return quizService.getPagedQuizzes(page, auth)
+    }
+
+    @GetMapping("/completed")
+    fun getPagedCompletedQuizzes(@RequestParam @Min(0) page: Int, auth: Authentication): Page<QuizCompletionDTO> {
+        return quizService.getPagedCompletedQuizzes(page, auth)
     }
 
     @PostMapping("/{id}/solve")
-    fun solveQuiz(@PathVariable id: Int, @RequestBody answer: QuizAnswer?): QuizResult {
-        return quizService.solveQuiz(id, answer)
+    fun solveQuiz(@PathVariable id: Int, @RequestBody answer: QuizAnswer?, auth: Authentication): QuizResult {
+        return quizService.solveQuiz(id, answer, auth)
     }
 
     @DeleteMapping("/{id}")
     fun deleteQuiz(@PathVariable id: Int, auth: Authentication): ResponseEntity<Quiz?> {
-        return quizService.deleteQuiz(id, auth.name)
+        return quizService.deleteQuiz(id, auth)
     }
-
 }
