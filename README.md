@@ -8,7 +8,7 @@ It includes many aspects of back-end development - REST API (Spring-Web), an emb
 
 This project was done as part of the fulfilment of the core topics of the Kotlin Backend Developer (Spring Boot) HyperSkill course.
 
-### Programming Language: English
+### Programming Language: Kotlin
 
 ### Framework: Spring Boot
 
